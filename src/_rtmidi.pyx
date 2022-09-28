@@ -1088,8 +1088,8 @@ cdef class MidiOut(MidiBase):
             can send messages using *different* MidiOut instances concurrently.
 
         Exceptions:
-
-        ``ValueError``
+        
+        ``ValueError`` <-- deactivated
             Raised if ``message`` argument is empty or more than 3 bytes long
             and not a SysEx message.
 
@@ -1098,10 +1098,11 @@ cdef class MidiOut(MidiBase):
 
         if not message:
             raise ValueError("'message' must not be empty.")
-
-        if len(message) > 3 and message[0] != 0xF0:
-            raise ValueError("'message' longer than 3 bytes but does not "
-                             "start with 0xF0.")
+        
+        # Allow breaking long sysex into chunks > 3 bytes long
+        #if len(message) > 3 and message[0] != 0xF0:
+        #    raise ValueError("'message' longer than 3 bytes but does not "
+        #                     "start with 0xF0.")
 
         for c in message:
             msg_v.push_back(c)
